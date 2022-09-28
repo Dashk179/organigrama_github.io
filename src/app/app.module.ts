@@ -10,13 +10,21 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
+import { HomeComponent } from './home/home.component';
+import { ChartComponent } from './chart/chart.component';
+import { HelpComponent } from './help/help.component';
+import { NotFoundComponent } from './not-found/not-found.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
     BreadcrumbsComponent,
-    LeftMenuComponent
+    LeftMenuComponent,
+    HomeComponent,
+    ChartComponent,
+    HelpComponent,
+    NotFoundComponent
   ],
   imports: [
     BrowserModule,
