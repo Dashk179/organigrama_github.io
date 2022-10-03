@@ -55,7 +55,19 @@ export class RepoService {
     return result;
   }
 
-  add(item: OrgaItem){}
+  add(item: OrgaItem): Promise<number>{
+    const result: Promise<number> =  new Promise((resolve,reject) =>{
+      this.DB.then( db => {
+        const transaction = db.transaction(this.STORAGE_NAME, 'readwrite');
+        const store = transaction.objectStore(this.STORAGE_NAME);
+        const request = store.add(item);
+        request.onsuccess = () =>{
+          resolve(Number(request.result));
+        }
+      });
+    });
+    return result;
+  }
 
   update(item: OrgaItem){}
 
