@@ -83,5 +83,17 @@ export class RepoService {
     return result;
   }
 
-  delete(id: number){}
+  delete(id: number){
+    const result = new Promise((resolve,reject)=>{
+      this.DB.then(db =>{
+        const transaction = db.transaction(this.STORAGE_NAME,'readwrite');
+        const store = transaction.objectStore(this.STORAGE_NAME);
+        const request = store.delete(id);
+        request.onsuccess = () => {
+          resolve(request.result);
+        }
+      });
+    });
+    return result;
+  }
 }
