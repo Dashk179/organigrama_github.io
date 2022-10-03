@@ -39,7 +39,21 @@ export class RepoService {
     return result;
   }
 
-  getList(parent: number){}
+  getList(root: number): Promise<OrgaItem[]>{
+    const result: Promise<OrgaItem[]> = new Promise((resolve,reject) =>{
+      this.DB.then(db =>{
+        const transaction = db.transaction(this.STORAGE_NAME, 'readonly');
+        const store = transaction.objectStore(this.STORAGE_NAME);
+        const range = IDBKeyRange.only(root);
+        const index = store.index('root');
+        const request = index.getAll(range);
+        request.onsuccess = () => {
+          resolve(request.result);
+        };
+      });
+    });
+    return result;
+  }
 
   add(item: OrgaItem){}
 
