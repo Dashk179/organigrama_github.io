@@ -69,7 +69,19 @@ export class RepoService {
     return result;
   }
 
-  update(item: OrgaItem){}
+  update(item: OrgaItem){
+    const result = new Promise((resolve,reject) => {
+      this.DB.then(db => {
+        const transaction = db.transaction(this.STORAGE_NAME, 'readwrite');
+        const store = transaction.objectStore(this.STORAGE_NAME);
+        const request = store.put(item);
+        request.onsuccess = () =>{
+          resolve(request.result);
+        }
+        });
+    });
+    return result;
+  }
 
   delete(id: number){}
 }
