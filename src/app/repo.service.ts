@@ -25,7 +25,19 @@ export class RepoService {
     });
    }
 
-  getItem(id: number){}
+  getItem(id: number): Promise<OrgaItem>{
+    const result: Promise<OrgaItem> = new Promise((resolve, reject) =>{
+      this.DB.then(db =>{
+        const transaction = db.transaction(this.STORAGE_NAME,'readonly');
+        const store = transaction.objectStore(this.STORAGE_NAME);
+        const request = store.get(id);
+        request.onsuccess = () => {
+          resolve(request.result);
+        };
+      });
+    });
+    return result;
+  }
 
   getList(parent: number){}
 
