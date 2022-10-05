@@ -1,6 +1,6 @@
 <div class="card-list-container">
     <div class="card-container" *ngFor="let item of list" (dblclick)="onDblClick(item)">
-        <div class="card" (click)="onClick(item)" [class.selected]="item.id===selectedId">
+        <div class="card" (click)="onClick(item)" [class.selected]="item.id===selectdId">
             <div class="title">
                 {{item.id}}
             </div>
