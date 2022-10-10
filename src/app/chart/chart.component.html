@@ -1,1 +1,26 @@
-<p>chart works!</p>
+<div class="container">
+    <h1>{{root.name}}</h1>
+    <svg xmlns="http://www.w3.org/2000/svg"></svg>
+    <div class="toolbox">
+        <button mat-icon-button aria-label="ZoomIn">
+            <mat-icon>zoom_in</mat-icon>
+        </button>
+        <button mat-icon-button aria-label="ZoomOut">
+            <mat-icon>zoom_out</mat-icon>
+        </button>
+        <button mat-icon-button aria-label="Pan">
+            <mat-icon>pan_tool</mat-icon>
+        </button>
+    </div>
+</div>
+<div class="details">
+    <h2>Detalles </h2>
+</div>
+<div class="action">
+    <button mat-mini-fab color="accent" class="action" aria-label="add">
+        <mat-icon>add</mat-icon>
+    </button>
+    <button mat-mini-fab color="accent" class="action" aria-label="delete">
+        <mat-icon>delete</mat-icon>
+    </button>
+</div>
