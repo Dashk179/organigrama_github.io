@@ -43,4 +43,10 @@ export class ChartComponent implements OnInit {
     });
   }
 
+  onChange(){
+    this.repo.update(this.selected).then(()=>{
+      this.getList();
+    });
+  }
+
 }

@@ -14,7 +14,25 @@
     </div>
 </div>
 <div class="details">
-    <h2>Detalles </h2>
+    <h2>Detalles #{{selected.id}}</h2>
+    <form>
+      <mat-form-field>
+        <mat-label>Nombre</mat-label>
+        <input type="text" name="name" matInput [(ngModel)]="selected.name"
+            (change)="onChange()">
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Descripcion</mat-label>
+        <textarea name="description" matInput [(ngModel)]="selected.description"
+        (change)="onChange()"></textarea>
+      </mat-form-field>
+      
+      <mat-form-field>
+        <mat-label>Nivel</mat-label>
+        <input type="text" name="level" disabled matInput [(ngModel)]="selected.level">
+      </mat-form-field>
+    </form>
 </div>
 <div class="action">
     <button mat-mini-fab color="accent" class="button" aria-label="add">
