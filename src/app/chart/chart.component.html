@@ -1,6 +1,22 @@
 <div class="container">
     <h1>{{root.name}}</h1>
-    <svg xmlns="http://www.w3.org/2000/svg"></svg>
+    <svg xmlns="http://www.w3.org/2000/svg"
+    width="300"
+    height="300"
+    viewbox="0 0 300 300"
+    class="chart">
+    <g>
+        <rect class="item"
+        x="115"
+        y="120"
+        width="70"
+        height="40"
+        rx="6" ry="6"
+        ></rect>
+        <text x="150" y="145"
+        class="item-text">{{root.name}}</text>
+    </g>
+</svg>
     <div class="toolbox">
         <button mat-icon-button aria-label="ZoomIn">
             <mat-icon>zoom_in</mat-icon>

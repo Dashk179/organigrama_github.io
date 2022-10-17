@@ -45,3 +45,14 @@
     right: 0;
     bottom: 0;
 }
+
+.item{
+    fill: #9fa8d9;
+    stroke: #3F51B5;
+    stroke-width: 1px;
+}
+
+.item-text{
+    text-anchor: middle;
+    font-size: 10px;
+}
