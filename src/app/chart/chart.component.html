@@ -5,16 +5,17 @@
     height="300"
     viewbox="0 0 300 300"
     class="chart">
-    <g>
+    <g *ngFor="let e of chartElementList" (click)="onClick(e.item)">
         <rect class="item"
-        x="115"
-        y="120"
-        width="70"
-        height="40"
+        [class.selected] ="e.item.id===selected.id"
+        [attr.x]="e.x - ELEMENT_WIDTH/2"
+        [attr.y]="e.y - ELEMENT_HEIGHT/2"
+        [attr.width]="ELEMENT_WIDTH"
+        [attr.height]="ELEMENT_HEIGHT"
         rx="6" ry="6"
         ></rect>
-        <text x="150" y="145"
-        class="item-text">{{root.name}}</text>
+        <text [attr.x]="e.x" [attr.y]="e.y"
+        class="item-text">{{e.item.name}}</text>
     </g>
 </svg>
     <div class="toolbox">
@@ -51,10 +52,10 @@
     </form>
 </div>
 <div class="action">
-    <button mat-mini-fab color="accent" class="button" aria-label="add">
+    <button mat-mini-fab (click)="onAdd()" color="accent" class="button" aria-label="add">
         <mat-icon>add</mat-icon>
     </button>
-    <button mat-mini-fab color="accent" class="button" aria-label="delete">
+    <button mat-mini-fab (click)="onDelete()" color="accent" class="button" aria-label="delete">
         <mat-icon>delete</mat-icon>
     </button>
 </div>
