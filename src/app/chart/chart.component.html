@@ -6,6 +6,8 @@
     viewbox="0 0 300 300"
     class="chart">
     <g *ngFor="let e of chartElementList" (click)="onClick(e.item)">
+        <path *ngIf="e.connection" [attr.d]="e.connection" 
+        class="connection"></path>
         <rect class="item"
         [class.selected] ="e.item.id===selected.id"
         [attr.x]="e.x - ELEMENT_WIDTH/2"

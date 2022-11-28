@@ -95,6 +95,7 @@ export class ChartComponent implements OnInit {
     }
     result.push(root);
     this.setChildren(result,root,list);
+    this.setConnection(result);
     return result;
   }
 
@@ -114,6 +115,17 @@ export class ChartComponent implements OnInit {
       };
       result.push(element);
       this.setChildren(result,element,list);
+    }
+  }
+
+  setConnection(list: ChartElement[]){
+    for (let e of list){
+      if(e.parent && e.item.level){
+        e.connection = `M ${e.x} ${e.y - this.ELEMENT_HEIGHT / 2} ` +
+        `C ${e.x} ${e.y - this.ELEMENT_HEIGHT}, ` +
+        `${e.parent.x} ${e.parent.y + this.ELEMENT_HEIGHT}, ` +
+        `${e.parent.x} ${e.parent.y + this.ELEMENT_HEIGHT / 2}`
+      }
     }
   }
 }
