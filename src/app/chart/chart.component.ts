@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { RepoService } from '../repo.service';
 import { ChartElement } from '../_models/ChartElement';
@@ -21,9 +21,69 @@ export class ChartComponent implements OnInit {
   ELEMENT_WIDTH =70;
   ELEMENT_HEIGHT = 40;
   PADDING=10;
+  zoom = 1;
+  ZOOM_FACTOR = 1.2;
+  dragMode = false;
+  moveMode = false;
+  startX = 0;
+  startY = 0;
+  x0 = 0;
+  y0 = 0;
+  x = 0;
+  y = 0;
+  viewBox = `${this.x} ${this.y} ${this.WIDTH} ${this.HEIGHT}`;
 
   constructor(private route:ActivatedRoute, private repo:RepoService) { }
+  setViewBox() {
+    this.viewBox = `${this.x * this.zoom} ` +
+      `${this.y * this.zoom} ` +
+      `${this.WIDTH * this.zoom} ` + 
+      `${this.HEIGHT * this.zoom}`;
+  }
 
+  onZoomIn() {
+    this.zoom /= this.ZOOM_FACTOR;
+    this.setViewBox();
+  }
+
+  onZoomOut() {
+    this.zoom *= this.ZOOM_FACTOR;
+    this.setViewBox();
+  }
+
+  onPan() {
+    this.dragMode = !this.dragMode;
+  }
+
+  @HostListener('document:mousedown', ['$event'])
+  onMouseDown(e: MouseEvent) {
+    if (this.dragMode) {
+      this.moveMode = true;
+      this.x0 = this.x;
+      this.y0 = this.y;
+      this.startX = e.clientX;
+      this.startY = e.clientY;
+    }
+  }
+
+  @HostListener('document:mouseup', ['$event'])
+  onMouseUp(e: MouseEvent) {
+    if (this.dragMode) {
+      this.moveMode = false;
+    }
+  }
+
+  @HostListener('document:mousemove', ['$event'])
+  onMouseMove(e: MouseEvent) {
+    if (this.moveMode) {
+      let dx, dy;
+      dx = e.clientX - this.startX;
+      dy = e.clientY - this.startY;
+      this.x = this.x0 - dx * this.zoom;
+      this.y = this.y0 - dy * this.zoom;
+      this.setViewBox();
+    }
+  }
   getRoot(){
     if (this.id) {
       this.repo.getItem(this.id).then(item =>{
@@ -95,6 +155,7 @@ export class ChartComponent implements OnInit {
     }
     result.push(root);
     this.setChildren(result,root,list);
+    this.shiftChartElemens(result);
     this.setConnection(result);
     return result;
   }
@@ -126,6 +187,46 @@ export class ChartComponent implements OnInit {
         `${e.parent.x} ${e.parent.y + this.ELEMENT_HEIGHT}, ` +
         `${e.parent.x} ${e.parent.y + this.ELEMENT_HEIGHT / 2}`
       }
+    }
+  }
+
+  compareElements = (a: ChartElement, b: ChartElement) =>{
+    if(!a.parent || !b.parent){
+      return 0;
+    }
+    if(a.parent.x < b.parent.x){
+      return 1;
+    }
+    if(a.parent.x > b.parent.x){
+      return 1;
+    }
+    if(a.x < b.x){
+      return -1;
+    }
+    return 1;
+  }; 
+
+  shiftChartElemens(list: ChartElement[]){
+    let level = 1;
+    while(true){
+      let offset = 0;
+      const elementList = list.filter(e => e.item.level === level);
+      if(!elementList.length){
+        break;
+      }
+      elementList.sort(this.compareElements);
+      for(let i=-0; i< elementList.length -1; i++){
+        let element = elementList[i];
+        let sibling = elementList[i +1];
+        let space = sibling.x - this.ELEMENT_WIDTH -2 * this.PADDING - element.x;
+        if(space < 0 ){
+          sibling.x -= space;
+          list.filter(e => e.parent === element).forEach(e => e.x -= space);
+          offset = Math.max(-space, offset);
+        }
+      }
+      list.filter(e => e.item.level >= level).forEach(e => e.x -= offset /2);
+      level++;
     }
   }
 }

@@ -1,9 +1,9 @@
 <div class="container">
     <h1>{{root.name}}</h1>
     <svg xmlns="http://www.w3.org/2000/svg"
-    width="300"
-    height="300"
-    viewbox="0 0 300 300"
+    [attr.width]="WIDTH"
+    [attr.height]="HEIGHT"
+    [attr.viewBox]="viewBox"
     class="chart">
     <g *ngFor="let e of chartElementList" (click)="onClick(e.item)">
         <path *ngIf="e.connection" [attr.d]="e.connection" 
@@ -20,17 +20,17 @@
         class="item-text">{{e.item.name}}</text>
     </g>
 </svg>
-    <div class="toolbox">
-        <button mat-icon-button aria-label="ZoomIn">
-            <mat-icon>zoom_in</mat-icon>
-        </button>
-        <button mat-icon-button aria-label="ZoomOut">
-            <mat-icon>zoom_out</mat-icon>
-        </button>
-        <button mat-icon-button aria-label="Pan">
-            <mat-icon>pan_tool</mat-icon>
-        </button>
-    </div>
+<div class="toolbox">
+    <button mat-icon-button (click)="onZoomIn()" aria-label="ZoomIn">
+        <mat-icon>zoom_in</mat-icon>
+    </button>
+    <button mat-icon-button (click)="onZoomOut()" aria-label="ZoomOut">
+        <mat-icon>zoom_out</mat-icon>
+    </button>
+    <button mat-icon-button (click)="onPan()" aria-label="Pan">
+        <mat-icon>pan_tool</mat-icon>
+    </button>
+</div>
 </div>
 <div class="details">
     <h2>Detalles #{{selected.id}}</h2>
