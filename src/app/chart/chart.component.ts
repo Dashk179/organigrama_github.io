@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { RepoService } from '../repo.service';
 import { ChartElement } from '../_models/ChartElement';
@@ -10,6 +10,8 @@ import { OrgaItem } from '../_models/OrgaItem';
   styleUrls: ['./chart.component.css']
 })
 export class ChartComponent implements OnInit {
+  @ViewChild('chart')
+  chart?: ElementRef<SVGAElement>
   id?: number;
   newItem: OrgaItem = {name:"New Item", level:1, description:''};
   selected = this.newItem;
@@ -34,6 +36,25 @@ export class ChartComponent implements OnInit {
   viewBox = `${this.x} ${this.y} ${this.WIDTH} ${this.HEIGHT}`;
 
   constructor(private route:ActivatedRoute, private repo:RepoService) { }
+
+  setChartSize(){
+    if (this.chart) {
+      this.WIDTH = this.chart.nativeElement.clientWidth;
+      this.HEIGHT = this.chart.nativeElement.clientHeight;
+      this.setViewBox();
+      this.chartElementList = this.setChartElementList(this.list);
+    }
+  }
+
+  @HostListener('window:resize')
+  onRisize(){
+    this.setChartSize
+  }
+
+  ngAfterViewInit(){
+    window.setTimeout(()=> this.setChartSize());
+  }
+
   setViewBox() {
     this.viewBox = `${this.x * this.zoom} ` +
       `${this.y * this.zoom} ` +
