@@ -10,6 +10,7 @@ import { OrgaItem } from '../_models/OrgaItem';
   styleUrls: ['./chart.component.css']
 })
 export class ChartComponent implements OnInit {
+  colors = ['#9E9E9E','#388E3C','#4527A0','#EF6C00'];
   @ViewChild('chart')
   chart?: ElementRef<SVGAElement>
   id?: number;
